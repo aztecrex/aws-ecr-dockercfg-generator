@@ -36,7 +36,7 @@ Optionally, you can also set the following variables to assume a role across acc
 * AWS_STS_ACCOUNT - The AWS account the role exists in
 
 Credentials can be cached between runs by mounting a host volume
-to catch docker configuration. By default, the file is written to
+to share the cached docker configuration. By default, the file is written to
 ```/data/cache/docker-config.json```. The cache location can be
 configured with the ```DOCKER_CONFIG_CACHE``` environment variable.
 
