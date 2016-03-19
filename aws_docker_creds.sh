@@ -4,6 +4,14 @@ set -e
 
 echo 'AWS ECR dockercfg generator'
 
+DOCKER_CONFIG_CACHE="${DOCKER_CONFIG_CACHE-/data/cache/docker-config.json}"
+mkdir -p $(dirname ${DOCKER_CONFIG_CACHE})
+if [ -f "${DOCKER_CONFIG_CACHE}" ]; then
+  echo 'Using cached docker config'
+  cp "${DOCKER_CONFIG_CACHE}" $1
+  exit 0
+fi
+
 : "${AWS_REGION:?Need to set AWS_REGION}"
 : "${AWS_ACCESS_KEY_ID:?Need to set AWS_ACCESS_KEY_ID}"
 : "${AWS_SECRET_ACCESS_KEY:?Need to set AWS_SECRET_ACCESS_KEY}"
@@ -39,5 +47,6 @@ $(aws ecr get-login)
 # writing aws docker creds to desired path
 echo "Writing Docker creds to $1"
 chmod 544 ~/.docker/config.json
+cp ~/.docker/config.json ${DOCKER_CONFIG_CACHE}
 cp ~/.docker/config.json $1
 
