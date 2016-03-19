@@ -35,6 +35,11 @@ Optionally, you can also set the following variables to assume a role across acc
 * AWS_STS_ROLE - The AWS role to assume
 * AWS_STS_ACCOUNT - The AWS account the role exists in
 
+Credentials can be cached between runs by mounting a host volume
+to catch docker configuration. By default, the file is written to
+```/data/cache/docker-config.json```. The cache location can be
+configured with the ```DOCKER_CONFIG_CACHE``` environment variable.
+
 Here is an example of using and ECR Dockercfg generator to authenticate pushing an image.
 
 ```yaml
@@ -47,6 +52,8 @@ aws_dockercfg:
   image: codeship/aws-ecr-dockercfg-generator
   add_docker: true
   encrypted_env_file: aws.env.encrypted
+  volumes:
+    - ./tmp/cache:/data/cache
 ```
 
 ```yaml
